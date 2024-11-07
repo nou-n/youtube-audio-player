@@ -1,0 +1,83 @@
+﻿<Window x:Class="YoutubeAudio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YoutubeAudio"
+        mc:Ignorable="d"
+        Title="YoutubeAudio" Height="171" Width="357" Background="Transparent" AllowsTransparency="True" ResizeMode="NoResize" WindowStyle="None">
+    <Grid>
+        <Border Margin="16" Background="#424344" CornerRadius="8" >
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="4" BlurRadius="16" Opacity="0.65" RenderingBias="Performance" Direction="-90" Color="Black" />
+            </Border.Effect>
+            <Border Margin="1" CornerRadius="7.5" Background="#2C2D31">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="29"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Name="ActionBar" Background="Transparent" MouseLeftButtonDown="DragMove">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition Width="45"/>
+                        </Grid.ColumnDefinitions>
+                        <Label TextOptions.TextFormattingMode="Display"  Grid.Column="0" Content="Youtube Audio Player" Padding="0" Margin="8,0,0,0" Foreground="#FAFAFA" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="12"/>
+
+                        <Button TextOptions.TextFormattingMode="Display" Grid.Column="2" Content="&#xE949;" Click="MinimizeButton_onClick"  IsTabStop="False" Style="{StaticResource MinimizeButtonStyle}" BorderThickness="0" FontFamily="Segoe Fluent Icons" Background="Transparent" Foreground="#FFFAFAFA" FontSize="14"/>
+                        <Button TextOptions.TextFormattingMode="Display" Grid.Column="3" Content="&#xE106;" Click="ExitButton_onClick" IsTabStop="False" Style="{StaticResource ExitButtonStyle}" BorderThickness="0" FontFamily="Segoe Fluent Icons" Background="Transparent" Foreground="#FFFAFAFA" FontSize="14"/>
+                    </Grid>
+                    <Border Grid.Row="1" Background="#424344"/>
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label TextOptions.TextFormattingMode="Display" Grid.Row="0" Content="Video URL" Margin="10,7,0,1" Foreground="#FFB1B4BB" FontSize="11" Padding="0,5,0,0" Grid.IsSharedSizeScope="True"/>
+                            <TextBox TextOptions.TextFormattingMode="Display" x:Name="UrlTextBox" Cursor="IBeam" Background="#404145" Style="{StaticResource RoundTextBox}" Grid.Row="1" BorderThickness="0" Margin="8,0,8,4" Foreground="#FFFAFAFA" SelectionBrush="#FFA5A5A5" CaretBrush="#FFFAFAFA" Padding="6,0,6,0" Height="32"/>
+                        </Grid>
+                        <Border Grid.Row="1" Padding="8,4,8,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border PreviewMouseUp="SliderParent_PreviewMouseUp" PreviewMouseDown="SliderParent_PreviewMouseDown" x:Name="SliderParent" IsEnabled="False" Opacity="0.5" Grid.Column="0" Height="32" Background="#404145" CornerRadius="4.5">
+                                    <Slider ValueChanged="TimeSlider_ValueChanged" x:Name="TimeSlider" IsSnapToTickEnabled="True" Style="{StaticResource CustomSliderStyle}" VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Label x:Name="TimeLabel" TextOptions.TextFormattingMode="Display" Opacity="0.6" Padding="0" IsHitTestVisible="False" Content="00:00:00" Background="{x:Null}" Foreground="White" FontSize="13"/>
+                                </Border>
+                                <Button IsTabStop="False" Click="PlayButton_onClick" Content="&#xE768;" x:Name="PlayButton" Style="{StaticResource AnimatedButtonStyle}" Grid.Column="2" BorderThickness="0" VerticalAlignment="Center" Padding="8" TextOptions.TextFormattingMode="Display" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#FFFAFAFA" Background="#2C2D31" Width="32" Height="32"/>
+                                <Button Click="ResetButton_Click" x:Name="ResetButton" IsTabStop="False" Style="{StaticResource AnimatedButtonStyle}" Grid.Column="4" BorderThickness="0" VerticalAlignment="Center" Padding="8" Content="&#xE72C;" TextOptions.TextFormattingMode="Display" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#FFFAFAFA" Background="#FF2C2D31" Width="32" Height="32"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <Border x:Name="LoadingOverlay" Opacity="0" Visibility="Collapsed" Grid.Row="2" Background="#4C000000" CornerRadius="0,0,7.5,7.5">
+                        <Grid x:Name="LoadingOverlayContent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="LoadingCircle" Grid.Row="0" FontFamily="{DynamicResource Boot}" TextOptions.TextFormattingMode="Display"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FFFAFAFA" FontSize="15"/>
+                            <Label x:Name="LoadingIcon" Grid.Row="0" TextOptions.TextFormattingMode="Display" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FFFAFAFA" FontSize="18" FontFamily="Segoe Fluent Icons"/>
+                            <Label x:Name="LoadingInfo" Grid.Row="1" TextOptions.TextFormattingMode="Display" Content="Fetching..." VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#FFFAFAFA" FontSize="12"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Border>
+
+    </Grid>
+</Window>
